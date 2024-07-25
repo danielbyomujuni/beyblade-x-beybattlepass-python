@@ -30,16 +30,16 @@ async def main():
         #start notify
         await client.start_notify(17, callback)
 
-        #request info
         await client.write_gatt_char(client.services.get_characteristic(15).uuid, bytes.fromhex('51'));
-        await client.write_gatt_char(client.services.get_characteristic(15).uuid, bytes.fromhex('74'));
-        await client.write_gatt_char(client.services.get_characteristic(15).uuid, bytes.fromhex('75'));
-        
-        #await client.write_gatt
-        # _char(client.services.get_characteristic(15).uuid, bytes.fromhex('63')); #Service Dicvery not found
-        await asyncio.sleep(5.0)
 
-        #await client.stop_notify(client.services.get_characteristic(17))
+        print("scanning")
+
+        for i in range(0, 16 * 8):
+            print(i)
+            await client.write_gatt_char(client.services.get_characteristic(15).uuid, i.to_bytes());
+            await asyncio.sleep(0.5)
+
+        await client.stop_notify(client.services.get_characteristic(17))
         print("disconnected from battlepass")
 
 asyncio.run(main())
