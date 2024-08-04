@@ -30,14 +30,25 @@ async def main():
         #start notify
         await client.start_notify(17, callback)
 
-        await client.write_gatt_char(client.services.get_characteristic(15).uuid, bytes.fromhex('51'));
 
+        #await client.write_gatt_char(client.services.get_characteristic(15).uuid, bytes.fromhex('{:02X}'.format(81)));
+        #await asyncio.sleep()
+
+        # 01010001
+        #print(binascii.hexlify(bytearray([0x51])))
+        #await client.write_gatt_char(client.services.get_characteristic(15).uuid, bytearray([0x51]));
         print("scanning")
 
-        for i in range(0, 16 * 8):
-            print(i)
-            await client.write_gatt_char(client.services.get_characteristic(15).uuid, i.to_bytes());
-            await asyncio.sleep(0.5)
+        #51
+        for cmd in [81,116,117,97]:
+            print('{:02X}: {}'.format(cmd, cmd))
+            await client.write_gatt_char(client.services.get_characteristic(15).uuid, bytes.fromhex('{:02X}'.format(cmd)));
+            await asyncio.sleep(5)
+
+        #for i in range(70, 100):
+        #    print('{:02X}: {}'.format(i, i))
+        #    await client.write_gatt_char(client.services.get_characteristic(15).uuid, bytes.fromhex('{:02X}'.format(i)));
+        #    await asyncio.sleep(1)
 
         await client.stop_notify(client.services.get_characteristic(17))
         print("disconnected from battlepass")
